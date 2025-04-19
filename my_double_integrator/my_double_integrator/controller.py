@@ -1,10 +1,7 @@
 import rclpy
 from rclpy.node import Node
-
-## TODO:
-# Custom message types msg type is your FirstNameLastNameState for the double integrator state
-# Custom message types msg type is your FirstNameLastNameReference for the reference position
-# Custom message types msg type is your FirstNameLastNameControl for the control command
+from pid_controller_pkg.msg import ChristophPehlState, ChristophPehlReference, ChristophPehlControl 
+#Paketimport 
 
 
 
@@ -15,11 +12,11 @@ class PIDController(Node):
         self.declare_parameter('kp', 2.0)
         self.kp = self.get_parameter('kp').value
 
-        # TODO: Change the message types to your custom message types
-        # Topic names should include your matriculation number
-        self.control_publisher = self.create_publisher(ControlCommand, 'control_signal', 10)
-        self.state_subscriber = self.create_subscription(DoubleIntegratorState, 'integrator_state', self.update_state, 10)
-        self.reference_subscriber = self.create_subscription(ReferencePosition, 'reference_position', self.update_reference_position, 10)
+        #Name Christoph Pehl und Matrikelnummer 5047889 angepasst
+        self.control_publisher = self.create_publisher(ChristophPehlControl, 'control_signal_5047889', 10)
+        self.state_subscriber = self.create_subscription(ChristophPehlState, 'integrator_state_5047889', self.update_state, 10)
+        self.reference_subscriber = self.create_subscription(ChristophPehlReference, 'reference_position_5047889', self.update_reference_position, 10)
+
         self.timer = self.create_timer(self.refresh_time, self.publish_control_signal)
 
         self.current_position = 0.0
@@ -32,13 +29,16 @@ class PIDController(Node):
         self.reference_position = msg.reference_position
 
     def publish_control_signal(self):
-        ## TODO # Implement the PID control algorithm
-
-
-        #TODO Fix the type
-        control_msg = ControlCommand()
-        control_msg.acceleration = 0.0
+        #Einfacher P Regler
+        error = self.reference_position - self.current_position
+        acceleration = self.kp * error
+        #Typen gefixt
+        control_msg = ChristophPehlControl()
+        control_msg.acceleration = acceleration
         self.control_publisher.publish(control_msg)
+
+
+       
 
 
 def main(args=None):
