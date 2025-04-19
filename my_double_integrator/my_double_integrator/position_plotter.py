@@ -1,8 +1,9 @@
 import rclpy
 from rclpy.node import Node
 
-# Add you system state message import here!
-# Add you reference signal message import here! 
+from pid_controller_pkg.msg import ChristophPehlState
+from pid_controller_pkg.msg import ChristophPehlReference
+#imports hinzugefügt
 
 import matplotlib.pyplot as plt
 
@@ -10,9 +11,9 @@ class PlottingNode(Node):
     def __init__(self):
         super().__init__('plotting')
         
-        # Fix tyoe and name of the message        
-        self.subscription = self.create_subscription(Float32, '/reference_signal', self.listener_callback, 20)
-        self.output_subscription = self.create_subscription(Float32, '/system_output', self.output_callback, 20) 
+        #Typ und Name gefixt        
+        self.subscription = self.create_subscription(ChristophPehlReference, '/reference_position_5047889', self.listener_callback, 20)
+        self.output_subscription = self.create_subscription(ChristophPehlState, '/integrator_state_5047889', self.output_callback, 20)  
       
         self.reference_data = []
         self.output_data = []
