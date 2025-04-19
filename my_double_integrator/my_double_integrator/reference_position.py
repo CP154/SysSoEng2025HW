@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-# Add you reference position message import here!
+from pid_controller_pkg.msg import ChristophPehlReference #referenz importiert
 import math
 
 
@@ -11,7 +11,7 @@ class ReferencePositionPublisher(Node):
         self.declare_parameter('amplitude', 5.0)
         self.amplitude = self.get_parameter('amplitude').value
         
-        self.reference_publisher = self.create_publisher(ReferencePosition, 'reference_position', 10)
+        self.reference_publisher = self.create_publisher(ChristophPehlReference, 'reference_position_5047889', 10) #Angepasst
         self.timer = self.create_timer(self.refresh_time, self.publish_reference_position)
 
         self.time_elapsed = 0.0
