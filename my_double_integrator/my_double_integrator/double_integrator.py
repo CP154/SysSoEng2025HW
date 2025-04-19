@@ -1,15 +1,15 @@
 import rclpy
 from rclpy.node import Node
-# Add your system state message import here!
-# Add your reference signal message import here!
-# Add your control command message import here!
+from pid_controller_pkg.msg import ChristophPehlState
+# Add your reference signal message import here! --> Nicht benötigter import??
+from pid_controller_pkg.msg import ChristophPehlControl
 
 class DoubleIntegrator(Node):
     def __init__(self):
         super().__init__('double_integrator')
         self.refresh_time = 0.1
-        self.state_publisher = self.create_publisher(DoubleIntegratorState, 'integrator_state', 10)
-        self.control_subscriber = self.create_subscription(ControlCommand, 'control_signal', self.update_acceleration, 10)
+        self.state_publisher = self.create_publisher(ChristophPehlState, 'integrator_state_5047889', 10) #angepasst
+        self.control_subscriber = self.create_subscription(ChristophPehlControl, 'control_signal_5047889', self.update_acceleration, 10)
         self.timer = self.create_timer(self.refresh_time, self.publish_state)
 
         self.position = 0.0
